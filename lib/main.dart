@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             onPressed: () {},
             icon: Icon(Icons.settings),
-          )
+          ),
         ],
       ),
       body: Center(

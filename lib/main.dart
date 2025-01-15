@@ -10,12 +10,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Polini',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color(0x00b43e69)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Pole App'),
+      home: const MyHomePage(title: 'Polini'),
     );
   }
 }
@@ -43,29 +43,89 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('Body Text'),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            childAspectRatio: 0.70,
+          ),
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {},
+              child: Card(
+                elevation: 1,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    spacing: 3,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text('2025.01.11'),
+                      SizedBox(
+                        height: 130,
+                        child: Container(color: Colors.white),
+                      ),
+                      // 태그 개수, 길이 overflow 처리
+                      Wrap(
+                        spacing: 7,
+                        runSpacing: 0,
+                        children: [
+                          Chip(
+                            visualDensity: VisualDensity.compact,
+                            labelPadding: EdgeInsets.zero,
+                            label: Text(
+                              '#꼬리치기',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ),
+                          Chip(
+                            visualDensity: VisualDensity.compact,
+                            labelPadding: EdgeInsets.zero,
+                            label: Text(
+                              '#꼬리치기',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ),
+                          Chip(
+                            visualDensity: VisualDensity.compact,
+                            labelPadding: EdgeInsets.zero,
+                            label: Text(
+                              '#꼬리치기',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.camera_alt_outlined),
+            icon: Icon(Icons.photo_camera_back),
             label: 'My Records',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border),
-            label: 'My Motivation',
+            icon: Icon(Icons.flag_outlined),
+            label: 'My Progress',
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
       ),
     );
   }

@@ -1,0 +1,137 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:photo_manager/photo_manager.dart';
+
+import 'video_picker.page.dart';
+
+class RecordsPage extends StatefulWidget {
+  const RecordsPage({super.key});
+
+  @override
+  State<RecordsPage> createState() => _RecordsPageState();
+}
+
+class _RecordsPageState extends State<RecordsPage> {
+  final List<AssetEntity> _videos = [];
+
+  String _formatDate(DateTime date) {
+    return '${date.year}.${date.month.toString().padLeft(2, '0')}.${date.day.toString().padLeft(2, '0')}';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 8,
+            mainAxisSpacing: 8,
+            childAspectRatio: 0.70,
+          ),
+          itemCount: _videos.length,
+          itemBuilder: (context, index) {
+            final video = _videos[index];
+            return GestureDetector(
+              onTap: () async {
+                final file = await video.file;
+                if (file != null) {
+                  if (kDebugMode) {
+                    print('Video Path: ${file.path}');
+                  }
+                }
+              },
+              child: Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    spacing: 3.5,
+                    // TODO: Tablet / iPhone SE 확인
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(_formatDate(video.createDateTime)),
+                      SizedBox(
+                        height: 130,
+                        child: FutureBuilder<Widget>(
+                          future: video
+                              .thumbnailDataWithSize(ThumbnailSize(200, 200))
+                              .then((data) {
+                            if (data != null) {
+                              // TODO: 영상 삭제된 경우 처리
+                              return Image.memory(data, fit: BoxFit.cover);
+                            }
+                            return const Icon(Icons.broken_image);
+                          }),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                    ConnectionState.done &&
+                                snapshot.data != null) {
+                              return snapshot.data!;
+                            }
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        ),
+                      ),
+                      Wrap(
+                        spacing: 7,
+                        children: const [
+                          // TODO:Overflow 처리
+                          Chip(
+                            visualDensity: VisualDensity.compact,
+                            labelPadding: EdgeInsets.zero,
+                            label: Text(
+                              '#꼬리치기',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ),
+                          Chip(
+                            visualDensity: VisualDensity.compact,
+                            labelPadding: EdgeInsets.zero,
+                            label: Text(
+                              '#아프로디테',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ),
+                          Chip(
+                            visualDensity: VisualDensity.compact,
+                            labelPadding: EdgeInsets.zero,
+                            label: Text(
+                              '#투클라임',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final selectedVideo = await Navigator.push<AssetEntity>(
+            context,
+            MaterialPageRoute(builder: (context) => VideoPickerPage()),
+          );
+
+          if (selectedVideo != null) {
+            setState(() {
+              _videos.add(selectedVideo);
+            });
+          }
+        },
+        child: const Icon(Icons.file_upload_outlined),
+      ),
+    );
+  }
+}

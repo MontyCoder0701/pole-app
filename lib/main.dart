@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'progress.page.dart';
 import 'records.page.dart';
 
 void main() {
@@ -34,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Widget> _pages = [
     const RecordsPage(),
-    Center(child: Text('My Progress Page')),
+    const ProgressPage(),
   ];
 
   @override

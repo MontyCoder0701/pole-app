@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'progress.page.dart';
 import 'records.page.dart';
+import 'theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Polinii',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0x00b43e69)),
+        colorScheme: ColorScheme.fromSeed(seedColor: CustomColor.primary),
         useMaterial3: true,
       ),
       home: const MyHomePage(),

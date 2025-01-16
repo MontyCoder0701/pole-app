@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'progress.page.dart';
 import 'records.page.dart';
+import 'settings.page.dart';
 import 'theme.dart';
 
 void main() {
@@ -50,8 +51,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
             icon: Icon(Icons.settings, color: Colors.grey),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              );
+            },
           ),
         ],
       ),

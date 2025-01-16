@@ -28,7 +28,7 @@ class _RecordsPageState extends State<RecordsPage> {
             crossAxisCount: 2,
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
-            childAspectRatio: 0.70,
+            childAspectRatio: 0.65,
           ),
           itemCount: _videos.length,
           itemBuilder: (context, index) {
@@ -59,7 +59,7 @@ class _RecordsPageState extends State<RecordsPage> {
                         height: 130,
                         child: FutureBuilder<Widget>(
                           future: video
-                              .thumbnailDataWithSize(ThumbnailSize(200, 200))
+                              .thumbnailDataWithSize(ThumbnailSize(300, 300))
                               .then((data) {
                             if (data != null) {
                               // TODO: 영상 삭제된 경우 처리

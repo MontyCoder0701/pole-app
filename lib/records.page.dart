@@ -63,7 +63,10 @@ class _RecordsPageState extends State<RecordsPage> {
                               .then((data) {
                             if (data != null) {
                               // TODO: 영상 삭제된 경우 처리
-                              return Image.memory(data, fit: BoxFit.cover);
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.memory(data, fit: BoxFit.cover),
+                              );
                             }
                             return const Icon(Icons.broken_image);
                           }),

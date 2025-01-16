@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'theme.dart';
+
 class ProgressPage extends StatefulWidget {
   const ProgressPage({super.key});
 
@@ -68,7 +70,7 @@ class _ProgressPageState extends State<ProgressPage> {
                       child: Icon(
                         Icons.verified,
                         size: 80,
-                        color: Color(0x00b43e69).withValues(alpha: 0.5),
+                        color: CustomColor.primary.withValues(alpha: 0.5),
                       ),
                     ),
                 ],

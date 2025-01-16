@@ -28,7 +28,7 @@ class _RecordsPageState extends State<RecordsPage> {
             crossAxisCount: 2,
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
-            childAspectRatio: 0.65,
+            childAspectRatio: 0.6,
           ),
           itemCount: _videos.length,
           itemBuilder: (context, index) {
@@ -50,16 +50,16 @@ class _RecordsPageState extends State<RecordsPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
-                    spacing: 3.5,
+                    spacing: 7,
                     // TODO: Tablet / iPhone SE 확인
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(_formatDate(video.createDateTime)),
                       SizedBox(
-                        height: 130,
+                        height: 180,
                         child: FutureBuilder<Widget>(
                           future: video
-                              .thumbnailDataWithSize(ThumbnailSize(300, 300))
+                              .thumbnailDataWithSize(ThumbnailSize(300, 500))
                               .then((data) {
                             if (data != null) {
                               // TODO: 영상 삭제된 경우 처리
@@ -84,30 +84,46 @@ class _RecordsPageState extends State<RecordsPage> {
                       ),
                       Wrap(
                         spacing: 7,
-                        children: const [
+                        runSpacing: 7,
+                        children: [
                           // TODO:Overflow 처리
                           Chip(
                             visualDensity: VisualDensity.compact,
                             labelPadding: EdgeInsets.zero,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
                             label: Text(
                               '#꼬리치기',
-                              style: TextStyle(fontSize: 10),
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           Chip(
                             visualDensity: VisualDensity.compact,
                             labelPadding: EdgeInsets.zero,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
                             label: Text(
                               '#아프로디테',
-                              style: TextStyle(fontSize: 10),
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           Chip(
                             visualDensity: VisualDensity.compact,
                             labelPadding: EdgeInsets.zero,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
                             label: Text(
                               '#투클라임',
-                              style: TextStyle(fontSize: 10),
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ],

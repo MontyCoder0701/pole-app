@@ -54,7 +54,10 @@ class _RecordsPageState extends State<RecordsPage> {
                     // TODO: Tablet / iPhone SE 확인
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(_formatDate(video.createDateTime)),
+                      Text(
+                        _formatDate(video.createDateTime),
+                        style: TextStyle(color: Colors.black54),
+                      ),
                       SizedBox(
                         height: 180,
                         child: FutureBuilder<Widget>(
@@ -137,6 +140,7 @@ class _RecordsPageState extends State<RecordsPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        elevation: 2,
         onPressed: () async {
           final selectedVideo = await Navigator.push<AssetEntity>(
             context,

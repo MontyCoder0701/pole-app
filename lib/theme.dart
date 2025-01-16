@@ -3,5 +3,5 @@ import 'dart:ui';
 class CustomColor {
   CustomColor._();
 
-  static const primary = Color(0x00b43e69);
+  static const primary = Color(0xFFb43e69);
 }

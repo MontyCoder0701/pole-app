@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         centerTitle: false,
         title: Text(
-          'Polinii :)',
+          'Polinii:)',
           style: TextStyle(color: CustomColor.primary),
         ),
         actions: [

@@ -43,7 +43,7 @@ class _RecordsPageState extends State<RecordsPage> {
                 }
               },
               child: Card(
-                elevation: 2,
+                elevation: 1,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),

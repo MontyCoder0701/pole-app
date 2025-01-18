@@ -40,9 +40,7 @@ class VideoPickerPageState extends State<VideoPickerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('기록할 영상을 선택하세요'),
-      ),
+      appBar: AppBar(title: Text('영상을 골라요!')),
       body: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,

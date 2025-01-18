@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import 'theme.dart';
+import 'utils/date.utils.dart';
 
 class ProgressDetailPage extends StatefulWidget {
   final String taskTitle;
@@ -44,15 +45,10 @@ class _ProgressDetailPageState extends State<ProgressDetailPage> {
     return [];
   }
 
-  String _formatDate(DateTime date) {
-    return '${date.year}.${date.month.toString().padLeft(2, '0')}.${date.day.toString().padLeft(2, '0')}';
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
         title: Text(
           '#${widget.taskTitle} 기억들',
           style: TextStyle(
@@ -160,7 +156,7 @@ class _ProgressDetailPageState extends State<ProgressDetailPage> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Text(
-                                  _formatDate(video.createDateTime),
+                                  formatDate(video.createDateTime),
                                   style: const TextStyle(color: Colors.black54),
                                 ),
                                 const SizedBox(height: 8),

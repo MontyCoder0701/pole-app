@@ -6,10 +6,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text('설정'),
-      ),
+      appBar: AppBar(title: const Text('설정')),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
@@ -78,7 +75,7 @@ class SettingsPage extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.gavel),
-            title: const Text('Licenses'),
+            title: const Text('라이센스'),
             onTap: () {
               showLicensePage(context: context);
             },

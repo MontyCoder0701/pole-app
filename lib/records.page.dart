@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import 'record-detail.page.dart';
+import 'utils/date.utils.dart';
 import 'video_picker.page.dart';
 
 class RecordsPage extends StatefulWidget {
@@ -14,10 +15,6 @@ class RecordsPage extends StatefulWidget {
 class _RecordsPageState extends State<RecordsPage> {
   final List<AssetEntity> _videos = [];
   final List<String> _tags = ['#꼬리치기', '#아프로디테', '#투클라임'];
-
-  String _formatDate(DateTime date) {
-    return '${date.year}.${date.month.toString().padLeft(2, '0')}.${date.day.toString().padLeft(2, '0')}';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +74,7 @@ class _RecordsPageState extends State<RecordsPage> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Text(
-                                  _formatDate(video.createDateTime),
+                                  formatDate(video.createDateTime),
                                   style: TextStyle(color: Colors.black54),
                                 ),
                                 SizedBox(

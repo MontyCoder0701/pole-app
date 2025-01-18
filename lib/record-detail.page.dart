@@ -39,27 +39,18 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
       _controller = VideoPlayerController.file(file)
         ..initialize().then((_) {
           setState(() {});
-          _startHideTimer(); // Start the timer when video initializes
+          _startHideTimer();
         });
     }
   }
 
   void _startHideTimer() {
-    _hideTimer?.cancel(); // Cancel any existing timer
+    _hideTimer?.cancel();
     _hideTimer = Timer(const Duration(seconds: 3), () {
       setState(() {
-        _showControls = false; // Hide controls after 3 seconds
+        _showControls = false;
       });
     });
-  }
-
-  void _toggleControls() {
-    setState(() {
-      _showControls = !_showControls; // Toggle visibility of controls
-    });
-    if (_showControls) {
-      _startHideTimer(); // Restart the timer when controls are shown
-    }
   }
 
   @override
@@ -73,7 +64,6 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
         title: Text(
           _formatDate(widget.video.createDateTime),
           style: const TextStyle(fontStyle: FontStyle.italic),
@@ -98,7 +88,14 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
             const SizedBox(height: 16),
             if (_controller != null && _controller!.value.isInitialized)
               GestureDetector(
-                onTap: _toggleControls, // Toggle controls on tap
+                onTap: () {
+                  setState(() {
+                    _showControls = !_showControls;
+                  });
+                  if (_showControls) {
+                    _startHideTimer();
+                  }
+                },
                 child: Stack(
                   alignment: Alignment.bottomCenter,
                   children: [

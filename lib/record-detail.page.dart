@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:video_player/video_player.dart';
 
+import 'utils/date.util.dart';
+import 'widgets/chip.widget.dart';
+
 class RecordDetailPage extends StatefulWidget {
   final AssetEntity video;
   final List<String> tags;
@@ -22,10 +25,6 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
   VideoPlayerController? _controller;
   bool _showControls = true;
   Timer? _hideTimer;
-
-  String _formatDate(DateTime date) {
-    return '${date.year}.${date.month.toString().padLeft(2, '0')}.${date.day.toString().padLeft(2, '0')}';
-  }
 
   @override
   void initState() {
@@ -65,29 +64,42 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          _formatDate(widget.video.createDateTime),
+          formatDate(widget.video.createDateTime),
           style: const TextStyle(fontStyle: FontStyle.italic),
         ),
+        actions: [
+          // TODO: 영상 수정 범위 / 삭제 가능 여부 추가
+          IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.share)),
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: ListView(
-          children: [
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: widget.tags.map((tag) {
-                return Chip(
-                  label: Text(
-                    tag,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                );
-              }).toList(),
+      body: ListView(
+        padding: EdgeInsets.all(18),
+        children: [
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: widget.tags.map((tag) {
+              return CustomChip(label: tag);
+            }).toList(),
+          ),
+          const SizedBox(height: 12),
+          Card.outlined(
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: const Text(
+                '조금만 더 올라가서 다리 걸어야겠다. 아무래도 높이 안걸다보니까 프린세스가 예쁘게 완성되지 않았다.',
+              ),
             ),
-            const SizedBox(height: 16),
-            if (_controller != null && _controller!.value.isInitialized)
-              GestureDetector(
+          ),
+          const SizedBox(height: 10),
+          // TODO: 영상 없는 경우 처리
+          if (_controller == null || !_controller!.value.isInitialized) ...{
+            const Center(child: CircularProgressIndicator()),
+          } else ...{
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
                 onTap: () {
                   setState(() {
                     _showControls = !_showControls;
@@ -106,7 +118,7 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
                         child: VideoPlayer(_controller!),
                       ),
                     ),
-                    if (_showControls)
+                    if (_showControls) ...{
                       ClipRRect(
                         borderRadius: BorderRadius.circular(12),
                         child: Container(
@@ -153,17 +165,13 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
                           ),
                         ),
                       ),
+                    },
                   ],
                 ),
-              )
-            else
-              const Center(child: CircularProgressIndicator()),
-            const SizedBox(height: 20),
-            const Text(
-              '조금만 더 올라가서 다리 걸어야겠다. 아무래도 높이 안걸다보니까 프린세스가 예쁘게 완성되지 않았다.',
+              ),
             ),
-          ],
-        ),
+          },
+        ],
       ),
     );
   }

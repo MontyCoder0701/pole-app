@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import 'record-detail.page.dart';
 import 'video_picker.page.dart';
 
 class RecordsPage extends StatefulWidget {
@@ -12,6 +13,7 @@ class RecordsPage extends StatefulWidget {
 
 class _RecordsPageState extends State<RecordsPage> {
   final List<AssetEntity> _videos = [];
+  final List<String> _tags = ['#꼬리치기', '#아프로디테', '#투클라임'];
 
   String _formatDate(DateTime date) {
     return '${date.year}.${date.month.toString().padLeft(2, '0')}.${date.day.toString().padLeft(2, '0')}';
@@ -33,7 +35,7 @@ class _RecordsPageState extends State<RecordsPage> {
                       EdgeInsets.symmetric(horizontal: 15),
                     ),
                     elevation: WidgetStatePropertyAll(1),
-                    leading: Icon(Icons.search),
+                    trailing: [Icon(Icons.search)],
                     hintText: '동작을 검색해보세요...',
                   ),
                   SizedBox(height: 15),
@@ -52,11 +54,15 @@ class _RecordsPageState extends State<RecordsPage> {
                       final video = _videos[index];
                       return GestureDetector(
                         onTap: () async {
-                          final file = await video.file;
-                          if (file != null) {
-                            debugPrint('Video id: ${video.id}');
-                            debugPrint('Video Path: ${file.path}');
-                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RecordDetailPage(
+                                video: video,
+                                tags: _tags,
+                              ),
+                            ),
+                          );
                         },
                         child: Card(
                           elevation: 1,
@@ -79,15 +85,18 @@ class _RecordsPageState extends State<RecordsPage> {
                                   child: FutureBuilder<Widget>(
                                     future: video
                                         .thumbnailDataWithSize(
-                                            ThumbnailSize(300, 500))
+                                      ThumbnailSize(300, 500),
+                                    )
                                         .then((data) {
                                       if (data != null) {
                                         // TODO: 영상 삭제된 경우 처리
                                         return ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(8),
-                                          child: Image.memory(data,
-                                              fit: BoxFit.cover),
+                                          child: Image.memory(
+                                            data,
+                                            fit: BoxFit.cover,
+                                          ),
                                         );
                                       }
                                       return const Icon(Icons.broken_image);
@@ -156,7 +165,7 @@ class _RecordsPageState extends State<RecordsPage> {
                         ),
                       );
                     },
-                  )
+                  ),
                 ],
               ),
       ),

@@ -75,11 +75,11 @@ class _MyHomePageState extends State<MyHomePage> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.photo_camera_back),
-            label: 'My Records',
+            label: '내 폴기록',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.flag_outlined),
-            label: 'My Progress',
+            label: '내 성장기록',
           ),
         ],
       ),

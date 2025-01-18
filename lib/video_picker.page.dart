@@ -41,7 +41,7 @@ class VideoPickerPageState extends State<VideoPickerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Video to Upload'),
+        title: Text('기록할 영상을 선택하세요'),
       ),
       body: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
@@ -23,121 +22,126 @@ class _RecordsPageState extends State<RecordsPage> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-            childAspectRatio: 0.6,
-          ),
-          itemCount: _videos.length,
-          itemBuilder: (context, index) {
-            final video = _videos[index];
-            return GestureDetector(
-              onTap: () async {
-                final file = await video.file;
-                if (file != null) {
-                  if (kDebugMode) {
-                    print('Video Path: ${file.path}');
-                  }
-                }
-              },
-              child: Card(
-                elevation: 1,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+        child: _videos.isEmpty
+            ? Center(
+                child: Text('새 기록을 추가해보세요!'),
+              )
+            : GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 0.55,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    spacing: 7,
-                    // TODO: Tablet / iPhone SE 확인
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        _formatDate(video.createDateTime),
-                        style: TextStyle(color: Colors.black54),
+                itemCount: _videos.length,
+                itemBuilder: (context, index) {
+                  final video = _videos[index];
+                  return GestureDetector(
+                    onTap: () async {
+                      final file = await video.file;
+                      if (file != null) {
+                        debugPrint('Video id: ${video.id}');
+                        debugPrint('Video Path: ${file.path}');
+                      }
+                    },
+                    child: Card(
+                      elevation: 1,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      SizedBox(
-                        height: 180,
-                        child: FutureBuilder<Widget>(
-                          future: video
-                              .thumbnailDataWithSize(ThumbnailSize(300, 500))
-                              .then((data) {
-                            if (data != null) {
-                              // TODO: 영상 삭제된 경우 처리
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.memory(data, fit: BoxFit.cover),
-                              );
-                            }
-                            return const Icon(Icons.broken_image);
-                          }),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                    ConnectionState.done &&
-                                snapshot.data != null) {
-                              return snapshot.data!;
-                            }
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          spacing: 15,
+                          // TODO: Tablet / iPhone SE 확인
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              _formatDate(video.createDateTime),
+                              style: TextStyle(color: Colors.black54),
+                            ),
+                            SizedBox(
+                              height: 180,
+                              child: FutureBuilder<Widget>(
+                                future: video
+                                    .thumbnailDataWithSize(
+                                        ThumbnailSize(300, 500))
+                                    .then((data) {
+                                  if (data != null) {
+                                    // TODO: 영상 삭제된 경우 처리
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child:
+                                          Image.memory(data, fit: BoxFit.cover),
+                                    );
+                                  }
+                                  return const Icon(Icons.broken_image);
+                                }),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                          ConnectionState.done &&
+                                      snapshot.data != null) {
+                                    return snapshot.data!;
+                                  }
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                              ),
+                            ),
+                            Wrap(
+                              spacing: 7,
+                              runSpacing: 7,
+                              children: [
+                                // TODO:Overflow 처리
+                                Chip(
+                                  visualDensity: VisualDensity.compact,
+                                  labelPadding: EdgeInsets.zero,
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  label: Text(
+                                    '#꼬리치기',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Chip(
+                                  visualDensity: VisualDensity.compact,
+                                  labelPadding: EdgeInsets.zero,
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  label: Text(
+                                    '#아프로디테',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Chip(
+                                  visualDensity: VisualDensity.compact,
+                                  labelPadding: EdgeInsets.zero,
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  label: Text(
+                                    '#투클라임',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      Wrap(
-                        spacing: 7,
-                        runSpacing: 7,
-                        children: [
-                          // TODO:Overflow 처리
-                          Chip(
-                            visualDensity: VisualDensity.compact,
-                            labelPadding: EdgeInsets.zero,
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                            label: Text(
-                              '#꼬리치기',
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Chip(
-                            visualDensity: VisualDensity.compact,
-                            labelPadding: EdgeInsets.zero,
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                            label: Text(
-                              '#아프로디테',
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Chip(
-                            visualDensity: VisualDensity.compact,
-                            labelPadding: EdgeInsets.zero,
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                            label: Text(
-                              '#투클라임',
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
-        ),
       ),
       floatingActionButton: FloatingActionButton(
         elevation: 2,

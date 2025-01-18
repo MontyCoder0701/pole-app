@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'progress-detail.page.dart';
 import 'theme.dart';
 
 class ProgressPage extends StatefulWidget {
@@ -11,27 +12,26 @@ class ProgressPage extends StatefulWidget {
 
 class _ProgressPageState extends State<ProgressPage> {
   final List<List<bool>> _completedTasks = [
-    List.generate(9, (_) => false),
+    [true, true, false, true, false, true, false],
     List.generate(9, (_) => false),
     List.generate(9, (_) => false),
   ];
 
   final List<List<String>> _exampleTasks = [
     [
-      '초급 스텝 연습',
-      '기본 턴 연습',
-      '크로스 홀드',
-      '폴 잡고 무게 옮기기',
-      '기본 플랭크 자세',
-      '폴에서 다리 펴기 연습',
-      '한쪽 다리 들기 연습',
-      '폴과 함께 걷기',
-      '기본 스트레칭',
+      '베이스볼 그립',
+      '클라임',
+      '폴싯',
+      '팅커벨',
+      '프린세스',
+      '이지 보텍스',
+      '핀업걸',
     ],
     [
-      '스핀 턴',
-      '폴 올라가기 연습',
-      '폴에서 밸런스 잡기',
+      '다프네',
+      '투클라임',
+      '큐피드',
+      '턴테이블',
       '앞으로 회전 스텝',
       '뒤로 회전 스텝',
       '하프 플랭크 자세',
@@ -57,74 +57,109 @@ class _ProgressPageState extends State<ProgressPage> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: ListView.separated(
-          separatorBuilder: (context, index) => SizedBox(height: 30),
-          itemCount: _completedTasks.length,
-          itemBuilder: (context, gridIndex) {
-            final title = ['초급', '중급', '고급'][gridIndex];
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+        child: ListView(
+          children: [
+            Card(
+              elevation: 1,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  spacing: 3,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '동작 도장깨기!',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Text(
+                      '난이도 별 동작 도장깨기에 도전해보세요! 각 동작을 눌러 지금까지 내 성장기록을 살펴보세요!',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    childAspectRatio: 1,
-                  ),
-                  itemCount: _completedTasks[gridIndex].length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _completedTasks[gridIndex][index] =
-                              !_completedTasks[gridIndex][index];
-                        });
-                      },
-                      child: Stack(
-                        children: [
-                          Card(
-                            elevation: 1,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Center(
-                                child: Text(
-                                  _exampleTasks[gridIndex][index],
-                                  textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 30),
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              separatorBuilder: (context, index) => SizedBox(height: 30),
+              itemCount: _completedTasks.length,
+              itemBuilder: (context, gridIndex) {
+                final title = ['나는 폴린이!', '이제 초급!', '좀 하는 중급'][gridIndex];
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                        childAspectRatio: 1,
+                      ),
+                      itemCount: _completedTasks[gridIndex].length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProgressDetailPage(
+                                  taskTitle: _exampleTasks[gridIndex][index],
                                 ),
                               ),
-                            ),
-                          ),
-                          if (_completedTasks[gridIndex][index])
-                            Center(
-                              child: Icon(
-                                Icons.verified,
-                                size: 80,
-                                color:
-                                    CustomColor.primary.withValues(alpha: 0.5),
+                            );
+                          },
+                          child: Stack(
+                            children: [
+                              Card(
+                                elevation: 1,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Center(
+                                    child: Text(
+                                      _exampleTasks[gridIndex][index],
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ],
-            );
-          },
+                              if (_completedTasks[gridIndex][index])
+                                Center(
+                                  child: Icon(
+                                    Icons.verified,
+                                    size: 80,
+                                    color: CustomColor.primary
+                                        .withValues(alpha: 0.5),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

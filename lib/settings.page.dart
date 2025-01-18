@@ -6,10 +6,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: const Text('설정'),
-      ),
+      appBar: AppBar(title: const Text('설정')),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
@@ -18,8 +15,9 @@ class SettingsPage extends StatelessWidget {
             style: TextStyle(fontSize: 18),
           ),
           ListTile(
-            leading: const Icon(Icons.star),
+            leading: const Icon(Icons.not_started_outlined),
             title: const Text('폴 시작한지 100일'),
+            onTap: () {},
           ),
           ListTile(
             leading: const Icon(Icons.lock),
@@ -30,18 +28,6 @@ class SettingsPage extends StatelessWidget {
           const Text(
             '환경 설정',
             style: TextStyle(fontSize: 18),
-          ),
-          ListTile(
-            leading: const Icon(Icons.brightness_6),
-            title: const Text('테마'),
-            trailing: DropdownButton<String>(
-              value: 'Light',
-              items: const [
-                DropdownMenuItem(value: 'Light', child: Text('Light')),
-                DropdownMenuItem(value: 'Dark', child: Text('Dark')),
-              ],
-              onChanged: (value) {},
-            ),
           ),
           ListTile(
             leading: const Icon(Icons.language),
@@ -78,7 +64,7 @@ class SettingsPage extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.gavel),
-            title: const Text('Licenses'),
+            title: const Text('라이센스'),
             onTap: () {
               showLicensePage(context: context);
             },

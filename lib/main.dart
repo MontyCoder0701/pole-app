@@ -18,6 +18,8 @@ class MyApp extends StatelessWidget {
       title: 'Polinii',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: CustomColor.primary),
+        appBarTheme: AppBarTheme(centerTitle: false, color: Colors.transparent),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(elevation: 1),
         useMaterial3: true,
       ),
       home: const MyHomePage(),
@@ -44,7 +46,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
         title: Text(
           'Polinii:)',
           style: TextStyle(color: CustomColor.primary),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'progress-detail.page.dart';
+import 'settings.page.dart';
 import 'theme.dart';
 
 class ProgressPage extends StatefulWidget {
@@ -56,6 +57,23 @@ class _ProgressPageState extends State<ProgressPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Polinii:)',
+          style: TextStyle(color: CustomColor.primary),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings, color: Colors.grey),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              );
+            },
+          ),
+        ],
+      ),
       body: ListView(
         padding: EdgeInsets.all(10),
         children: [

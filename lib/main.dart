@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'progress.page.dart';
 import 'records.page.dart';
-import 'settings.page.dart';
 import 'theme.dart';
 
 void main() {
@@ -45,23 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Polinii:)',
-          style: TextStyle(color: CustomColor.primary),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings, color: Colors.grey),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsPage()),
-              );
-            },
-          ),
-        ],
-      ),
       body: IndexedStack(
         index: _currentIndex,
         children: _pages,

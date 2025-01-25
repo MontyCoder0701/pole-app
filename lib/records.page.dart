@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 import 'record-detail.page.dart';
+import 'settings.page.dart';
+import 'theme.dart';
 import 'utils/date.util.dart';
 import 'video_picker.page.dart';
 import 'widgets/chip.widget.dart';
@@ -21,14 +23,90 @@ class _RecordsPageState extends State<RecordsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Polinii:)',
+          style: TextStyle(color: CustomColor.primary),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings, color: Colors.grey),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              );
+            },
+          ),
+        ],
+      ),
       body: _videos.isEmpty
-          ? Center(
-              child: Text(
-                '🎀새 기록을 추가해보세요!',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.black54,
+          ? Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).canvasColor,
+                    CustomColor.primary.withValues(alpha: 0.5),
+                    Theme.of(context).canvasColor,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.favorite_border,
+                      size: 80,
+                      color: CustomColor.primary.withValues(alpha: 0.7),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      '새 기록을 추가해보세요!',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      '동영상을 추가하여 기록을 시작하세요.',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black54,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 24),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        final selectedVideo = await Navigator.push<AssetEntity>(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VideoPickerPage(),
+                          ),
+                        );
+
+                        if (selectedVideo != null) {
+                          setState(() {
+                            _videos.add(selectedVideo);
+                          });
+                        }
+                      },
+                      icon: Icon(Icons.add),
+                      label: Text('새 기록 추가하기'),
+                      style: ElevatedButton.styleFrom(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             )
@@ -134,22 +212,25 @@ class _RecordsPageState extends State<RecordsPage> {
                 ),
               ],
             ),
-      floatingActionButton: FloatingActionButton(
-        elevation: 2,
-        onPressed: () async {
-          final selectedVideo = await Navigator.push<AssetEntity>(
-            context,
-            MaterialPageRoute(builder: (context) => VideoPickerPage()),
-          );
+      floatingActionButton: Visibility(
+        visible: _videos.isNotEmpty,
+        child: FloatingActionButton(
+          elevation: 2,
+          onPressed: () async {
+            final selectedVideo = await Navigator.push<AssetEntity>(
+              context,
+              MaterialPageRoute(builder: (context) => VideoPickerPage()),
+            );
 
-          if (selectedVideo != null) {
-            setState(() {
-              _videos.add(selectedVideo);
-            });
-          }
-        },
-        heroTag: 'Record',
-        child: const Icon(Icons.file_upload_outlined),
+            if (selectedVideo != null) {
+              setState(() {
+                _videos.add(selectedVideo);
+              });
+            }
+          },
+          heroTag: 'Record',
+          child: const Icon(Icons.file_upload_outlined),
+        ),
       ),
     );
   }

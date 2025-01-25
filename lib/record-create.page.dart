@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:video_player/video_player.dart';
 
+import 'main.dart';
 import 'theme.dart';
 import 'utils/date.util.dart';
 import 'widgets/chip.widget.dart';
@@ -32,8 +33,6 @@ class _RecordCreatePageState extends State<RecordCreatePage> {
   void initState() {
     super.initState();
     _initializeVideo();
-    _textEditingController.text =
-        '조금만 더 올라가서 다리 걸어야겠다. 아무래도 높이 안걸다보니까 프린세스가 예쁘게 완성되지 않았다.';
   }
 
   Future<void> _initializeVideo() async {
@@ -83,8 +82,33 @@ class _RecordCreatePageState extends State<RecordCreatePage> {
           style: const TextStyle(fontStyle: FontStyle.italic),
         ),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.close)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.check)),
+          IconButton(
+            onPressed: () {
+              // TODO: 확인 모달 추가
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(),
+                ),
+                (route) => false,
+              );
+            },
+            icon: Icon(Icons.close),
+          ),
+          IconButton(
+            onPressed: () {
+              //TODO: Provider 등 상태관리 필요
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyHomePage(),
+                ),
+                (route) => false,
+              );
+            },
+            icon: Icon(Icons.check),
+            color: CustomColor.primary,
+          ),
         ],
       ),
       body: ListView(
@@ -137,6 +161,7 @@ class _RecordCreatePageState extends State<RecordCreatePage> {
                 controller: _textEditingController,
                 maxLines: null,
                 decoration: const InputDecoration(
+                  hintText: '이번 폴링은 어땠니요...?',
                   border: InputBorder.none,
                 ),
               ),

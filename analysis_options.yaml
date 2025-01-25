@@ -5,3 +5,7 @@ linter:
     - prefer_single_quotes
     - prefer_relative_imports
     - require_trailing_commas
+
+analyzer:
+  plugins:
+    - custom_lint

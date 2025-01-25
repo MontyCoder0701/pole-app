@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../theme.dart';
 import 'progress-detail.page.dart';
 import 'settings.page.dart';
-import 'theme.dart';
 
 class ProgressPage extends StatefulWidget {
   const ProgressPage({super.key});

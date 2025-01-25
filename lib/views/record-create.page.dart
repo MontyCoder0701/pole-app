@@ -4,27 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:video_player/video_player.dart';
 
-import 'utils/date.util.dart';
-import 'widgets/chip.widget.dart';
+import '../theme.dart';
+import '../utils/date.util.dart';
+import '../widgets/chip.widget.dart';
+import 'home.page.dart';
 
-class RecordDetailPage extends StatefulWidget {
+class RecordCreatePage extends StatefulWidget {
   final AssetEntity video;
-  final List<String> tags;
 
-  const RecordDetailPage({
+  const RecordCreatePage({
     super.key,
     required this.video,
-    required this.tags,
   });
 
   @override
-  State<RecordDetailPage> createState() => _RecordDetailPageState();
+  State<RecordCreatePage> createState() => _RecordCreatePageState();
 }
 
-class _RecordDetailPageState extends State<RecordDetailPage> {
+class _RecordCreatePageState extends State<RecordCreatePage> {
+  final List<String> _tags = [];
   VideoPlayerController? _controller;
   bool _showControls = true;
   Timer? _hideTimer;
+  final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _newTagController = TextEditingController();
 
   @override
   void initState() {
@@ -52,10 +55,21 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
     });
   }
 
+  void _addTag(String tag) {
+    if (tag.isNotEmpty) {
+      setState(() {
+        _tags.add(tag);
+      });
+      _newTagController.clear();
+    }
+  }
+
   @override
   void dispose() {
     _hideTimer?.cancel();
     _controller?.dispose();
+    _textEditingController.dispose();
+    _newTagController.dispose();
     super.dispose();
   }
 
@@ -64,36 +78,96 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          formatDate(widget.video.createDateTime),
+          '새 기록 만들기',
           style: const TextStyle(fontStyle: FontStyle.italic),
         ),
         actions: [
-          // TODO: 영상 수정 범위 / 삭제 가능 여부 추가
-          IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.share)),
+          IconButton(
+            onPressed: () {
+              // TODO: 확인 모달 추가
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(),
+                ),
+                (route) => false,
+              );
+            },
+            icon: Icon(Icons.close),
+          ),
+          IconButton(
+            onPressed: () {
+              //TODO: Provider 등 상태관리 필요
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(),
+                ),
+                (route) => false,
+              );
+            },
+            icon: Icon(Icons.check),
+            color: CustomColor.primary,
+          ),
         ],
       ),
       body: ListView(
         padding: EdgeInsets.all(18),
         children: [
+          Text(formatDate(widget.video.createDateTime)),
+          const SizedBox(height: 12),
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: widget.tags.map((tag) {
+            children: _tags.map((tag) {
               return CustomChip(label: tag);
             }).toList(),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _newTagController,
+                  decoration: InputDecoration(
+                    hintText: '동작 태그를 추가해주세요...',
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: CustomColor.primary.withValues(alpha: 0.5),
+                      ),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: CustomColor.primary.withValues(alpha: 0.5),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              IconButton.filledTonal(
+                onPressed: () => _addTag(_newTagController.text),
+                icon: Icon(Icons.add),
+              ),
+            ],
           ),
           const SizedBox(height: 12),
           Card.outlined(
             child: Padding(
               padding: const EdgeInsets.all(12.0),
-              child: const Text(
-                '조금만 더 올라가서 다리 걸어야겠다. 아무래도 높이 안걸다보니까 프린세스가 예쁘게 완성되지 않았다.',
+              child: TextField(
+                controller: _textEditingController,
+                maxLines: null,
+                decoration: const InputDecoration(
+                  hintText: '이번 폴링은 어땠니요...?',
+                  border: InputBorder.none,
+                ),
               ),
             ),
           ),
           const SizedBox(height: 10),
-          // TODO: 영상 없는 경우 처리
           if (_controller == null || !_controller!.value.isInitialized) ...{
             const Center(child: CircularProgressIndicator()),
           } else ...{
@@ -126,7 +200,7 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
                             vertical: 8,
                             horizontal: 16,
                           ),
-                          color: Colors.black.withValues(alpha: 0.5),
+                          color: Colors.black.withAlpha(127),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [

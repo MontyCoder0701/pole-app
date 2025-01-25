@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import '../theme.dart';
+import '../utils/date.util.dart';
+import '../widgets/chip.widget.dart';
 import 'record-detail.page.dart';
 import 'settings.page.dart';
-import 'theme.dart';
-import 'utils/date.util.dart';
 import 'video_picker.page.dart';
-import 'widgets/chip.widget.dart';
 
 class RecordsPage extends StatefulWidget {
   const RecordsPage({super.key});

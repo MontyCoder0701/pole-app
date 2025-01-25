@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'progress.page.dart';
-import 'records.page.dart';
 import 'theme.dart';
+import 'views/home.page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,51 +20,7 @@ class MyApp extends StatelessWidget {
         floatingActionButtonTheme: FloatingActionButtonThemeData(elevation: 1),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
-
-  final List<Widget> _pages = [
-    const RecordsPage(),
-    const ProgressPage(),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _pages,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.photo_camera_back),
-            label: '내 폴기록',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.flag_outlined),
-            label: '내 성장기록',
-          ),
-        ],
-      ),
+      home: const HomePage(),
     );
   }
 }

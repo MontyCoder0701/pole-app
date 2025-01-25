@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
-import 'theme.dart';
-import 'utils/date.util.dart';
+import '../theme.dart';
+import '../utils/date.util.dart';
 
 class ProgressDetailPage extends StatefulWidget {
   final String taskTitle;

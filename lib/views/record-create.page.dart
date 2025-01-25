@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:video_player/video_player.dart';
 
+import '../models/poling-record.model.dart';
 import '../theme.dart';
 import '../utils/date.util.dart';
 import '../widgets/chip.widget.dart';
@@ -98,6 +100,17 @@ class _RecordCreatePageState extends State<RecordCreatePage> {
           IconButton(
             onPressed: () {
               //TODO: Provider 등 상태관리 필요
+              final newRecord = PolingRecord(
+                videoId: widget.video.id,
+                videoDate: widget.video.createDateTime,
+                tags: _tags,
+                memo: _textEditingController.text,
+              );
+
+              if (kDebugMode) {
+                print(newRecord);
+              }
+
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(

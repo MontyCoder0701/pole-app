@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import 'record-create.page.dart';
+
 class VideoPickerPage extends StatefulWidget {
   const VideoPickerPage({super.key});
 
@@ -53,8 +55,13 @@ class VideoPickerPageState extends State<VideoPickerPage> {
         itemBuilder: (context, index) {
           final video = _videos[index];
           return GestureDetector(
-            onTap: () {
-              Navigator.pop(context, video);
+            onTap: () async {
+              await Navigator.push<AssetEntity>(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RecordCreatePage(video: video),
+                ),
+              );
             },
             child: FutureBuilder<Widget>(
               future: video

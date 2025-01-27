@@ -1,24 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import '../models/poling-record.model.dart';
+import '../providers/poling-record.provider.dart';
 import '../theme.dart';
 import '../utils/date.util.dart';
 import '../widgets/chip.widget.dart';
-import 'record-detail.page.dart';
 import 'settings.page.dart';
 import 'video_picker.page.dart';
 
-class RecordsPage extends StatefulWidget {
+class RecordsPage extends ConsumerStatefulWidget {
   const RecordsPage({super.key});
 
   @override
-  State<RecordsPage> createState() => _RecordsPageState();
+  ConsumerState<RecordsPage> createState() => _RecordsPageState();
 }
 
-class _RecordsPageState extends State<RecordsPage> {
-  // TODO: Record Entity 추가 (video id, video date, tags, memo)
-  final List<AssetEntity> _videos = [];
-  final List<String> _tags = ['#꼬리치기', '#아프로디테', '#투클라임'];
+class _RecordsPageState extends ConsumerState<RecordsPage> {
+  late final List<PolingRecord> _records = ref.watch(polingRecordProvider);
+
+  Future<Widget> _getVideoThumbnail(String videoId) async {
+    final AssetEntity? video = await AssetEntity.fromId(videoId);
+    if (video != null) {
+      final thumbnailData = await video.thumbnailDataWithSize(
+        ThumbnailSize(300, 500),
+      );
+      if (thumbnailData != null) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.memory(
+            thumbnailData,
+            fit: BoxFit.cover,
+          ),
+        );
+      }
+    }
+    return const Icon(Icons.broken_image);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +59,7 @@ class _RecordsPageState extends State<RecordsPage> {
           ),
         ],
       ),
-      body: _videos.isEmpty
+      body: _records.isEmpty
           ? Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -82,19 +101,13 @@ class _RecordsPageState extends State<RecordsPage> {
                     ),
                     SizedBox(height: 24),
                     ElevatedButton.icon(
-                      onPressed: () async {
-                        final selectedVideo = await Navigator.push<AssetEntity>(
+                      onPressed: () {
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => VideoPickerPage(),
+                            builder: (context) => const VideoPickerPage(),
                           ),
                         );
-
-                        if (selectedVideo != null) {
-                          setState(() {
-                            _videos.add(selectedVideo);
-                          });
-                        }
                       },
                       icon: Icon(Icons.add),
                       label: Text('새 기록 추가하기'),
@@ -131,20 +144,21 @@ class _RecordsPageState extends State<RecordsPage> {
                     mainAxisSpacing: 8,
                     childAspectRatio: 0.55,
                   ),
-                  itemCount: _videos.length,
+                  itemCount: _records.length,
                   itemBuilder: (context, index) {
-                    final video = _videos[index];
+                    final PolingRecord record = _records[index];
                     return GestureDetector(
                       onTap: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RecordDetailPage(
-                              video: video,
-                              tags: _tags,
-                            ),
-                          ),
-                        );
+                        // TODO: 상세 페이지 이동
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => RecordDetailPage(
+                        //       videoId: record.videoId,
+                        //       tags: record.tags,
+                        //     ),
+                        //   ),
+                        // );
                       },
                       child: Card(
                         elevation: 1,
@@ -159,29 +173,13 @@ class _RecordsPageState extends State<RecordsPage> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text(
-                                formatDate(video.createDateTime),
+                                formatDate(record.videoDate),
                                 style: TextStyle(color: Colors.black54),
                               ),
                               SizedBox(
                                 height: 180,
                                 child: FutureBuilder<Widget>(
-                                  future: video
-                                      .thumbnailDataWithSize(
-                                    ThumbnailSize(300, 500),
-                                  )
-                                      .then((data) {
-                                    if (data != null) {
-                                      // TODO: 영상 삭제된 경우 처리
-                                      return ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Image.memory(
-                                          data,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      );
-                                    }
-                                    return const Icon(Icons.broken_image);
-                                  }),
+                                  future: _getVideoThumbnail(record.videoId),
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                             ConnectionState.done &&
@@ -197,11 +195,9 @@ class _RecordsPageState extends State<RecordsPage> {
                               Wrap(
                                 spacing: 7,
                                 runSpacing: 7,
-                                children: [
-                                  CustomChip(label: '#꼬리치기'),
-                                  CustomChip(label: '#아프로디테'),
-                                  CustomChip(label: '#투클라임'),
-                                ],
+                                children: record.tags
+                                    .map((tag) => CustomChip(label: tag))
+                                    .toList(),
                               ),
                             ],
                           ),
@@ -213,20 +209,14 @@ class _RecordsPageState extends State<RecordsPage> {
               ],
             ),
       floatingActionButton: Visibility(
-        visible: _videos.isNotEmpty,
+        visible: _records.isNotEmpty,
         child: FloatingActionButton(
           elevation: 2,
-          onPressed: () async {
-            final selectedVideo = await Navigator.push<AssetEntity>(
+          onPressed: () {
+            Navigator.push<AssetEntity>(
               context,
               MaterialPageRoute(builder: (context) => VideoPickerPage()),
             );
-
-            if (selectedVideo != null) {
-              setState(() {
-                _videos.add(selectedVideo);
-              });
-            }
           },
           heroTag: 'Record',
           child: const Icon(Icons.file_upload_outlined),

@@ -7,6 +7,7 @@ import '../providers/poling-record.provider.dart';
 import '../theme.dart';
 import '../utils/date.util.dart';
 import '../widgets/chip.widget.dart';
+import 'record-detail.page.dart';
 import 'settings.page.dart';
 import 'video_picker.page.dart';
 
@@ -149,16 +150,14 @@ class _RecordsPageState extends ConsumerState<RecordsPage> {
                     final PolingRecord record = _records[index];
                     return GestureDetector(
                       onTap: () async {
-                        // TODO: 상세 페이지 이동
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => RecordDetailPage(
-                        //       videoId: record.videoId,
-                        //       tags: record.tags,
-                        //     ),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RecordDetailPage(
+                              record: record,
+                            ),
+                          ),
+                        );
                       },
                       child: Card(
                         elevation: 1,

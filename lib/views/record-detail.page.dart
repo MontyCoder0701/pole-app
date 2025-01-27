@@ -4,17 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:video_player/video_player.dart';
 
+import '../models/poling-record.model.dart';
 import '../utils/date.util.dart';
 import '../widgets/chip.widget.dart';
 
 class RecordDetailPage extends StatefulWidget {
-  final AssetEntity video;
-  final List<String> tags;
+  final PolingRecord record;
 
   const RecordDetailPage({
     super.key,
-    required this.video,
-    required this.tags,
+    required this.record,
   });
 
   @override
@@ -33,7 +32,9 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
   }
 
   Future<void> _initializeVideo() async {
-    final file = await widget.video.file;
+    // TODO: 영상 존재유무 / 권한 등 확인
+    final AssetEntity? video = await AssetEntity.fromId(widget.record.videoId);
+    final file = await video?.file;
     if (file != null) {
       _controller = VideoPlayerController.file(file)
         ..initialize().then((_) {
@@ -64,7 +65,7 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          formatDate(widget.video.createDateTime),
+          formatDate(widget.record.videoDate),
           style: const TextStyle(fontStyle: FontStyle.italic),
         ),
         actions: [
@@ -79,7 +80,7 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: widget.tags.map((tag) {
+            children: widget.record.tags.map((tag) {
               return CustomChip(label: tag);
             }).toList(),
           ),
@@ -87,9 +88,7 @@ class _RecordDetailPageState extends State<RecordDetailPage> {
           Card.outlined(
             child: Padding(
               padding: const EdgeInsets.all(12.0),
-              child: const Text(
-                '조금만 더 올라가서 다리 걸어야겠다. 아무래도 높이 안걸다보니까 프린세스가 예쁘게 완성되지 않았다.',
-              ),
+              child: Text(widget.record.memo),
             ),
           ),
           const SizedBox(height: 10),

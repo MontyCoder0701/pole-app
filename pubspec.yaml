@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  photo_manager: ^3.6.3
+  photo_manager: ^3.6.4
   video_player: ^2.9.2
   flutter_riverpod: ^2.6.1
   riverpod_annotation: ^2.6.1

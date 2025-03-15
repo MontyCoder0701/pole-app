@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -16,10 +15,7 @@ import 'home.page.dart';
 class RecordCreatePage extends ConsumerStatefulWidget {
   final AssetEntity video;
 
-  const RecordCreatePage({
-    super.key,
-    required this.video,
-  });
+  const RecordCreatePage({super.key, required this.video});
 
   @override
   ConsumerState<RecordCreatePage> createState() => _RecordCreatePageState();
@@ -91,9 +87,7 @@ class _RecordCreatePageState extends ConsumerState<RecordCreatePage> {
               // TODO: 확인 모달 추가
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => HomePage(),
-                ),
+                MaterialPageRoute(builder: (context) => HomePage()),
                 (route) => false,
               );
             },
@@ -108,17 +102,11 @@ class _RecordCreatePageState extends ConsumerState<RecordCreatePage> {
                 memo: _textEditingController.text,
               );
 
-              if (kDebugMode) {
-                print(newRecord);
-              }
-
               ref.read(polingRecordProvider).add(newRecord);
 
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => HomePage(),
-                ),
+                MaterialPageRoute(builder: (context) => HomePage()),
                 (route) => false,
               );
             },
@@ -135,9 +123,10 @@ class _RecordCreatePageState extends ConsumerState<RecordCreatePage> {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: _tags.map((tag) {
-              return CustomChip(label: tag);
-            }).toList(),
+            children:
+                _tags.map((tag) {
+                  return CustomChip(label: tag);
+                }).toList(),
           ),
           const SizedBox(height: 12),
           Row(
@@ -177,7 +166,7 @@ class _RecordCreatePageState extends ConsumerState<RecordCreatePage> {
                 controller: _textEditingController,
                 maxLines: null,
                 decoration: const InputDecoration(
-                  hintText: '이번 폴링은 어땠니요...?',
+                  hintText: '이번 폴링은 어땠나요...?',
                   border: InputBorder.none,
                 ),
               ),

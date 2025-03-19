@@ -72,7 +72,7 @@ class SettingsPage extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.contact_support),
-            title: const Text('개발자 연락하기'),
+            title: const Text('의견 보내기'),
             onTap: () {},
           ),
           ListTile(

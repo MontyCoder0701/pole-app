@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -54,9 +55,20 @@ class SettingsPage extends StatelessWidget {
           // ),
           // const Divider(),
           const Text('About', style: TextStyle(fontSize: 18)),
-          ListTile(
-            leading: const Icon(Icons.info_outline),
-            title: const Text('앱 버전: 1.0.0'),
+          FutureBuilder<PackageInfo>(
+            future: PackageInfo.fromPlatform(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return const ListTile(
+                  leading: Icon(Icons.info_outline),
+                  title: Text('앱 버전: ...'),
+                );
+              }
+              return ListTile(
+                leading: const Icon(Icons.info_outline),
+                title: Text('앱 버전: ${snapshot.data?.version}'),
+              );
+            },
           ),
           ListTile(
             leading: const Icon(Icons.contact_support),
